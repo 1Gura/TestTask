@@ -1,0 +1,125 @@
+import {Component, forwardRef, NgModule, OnInit, ViewEncapsulation} from '@angular/core';
+import {NgForm} from '@angular/forms';
+
+import {
+  FormControl,
+  Validators,
+  FormsModule,
+  NgModel,
+  ReactiveFormsModule,
+  FormGroup,
+  ControlValueAccessor,
+  NG_VALUE_ACCESSOR,
+
+} from '@angular/forms';
+import {logger} from 'codelyzer/util/logger';
+import {HttpClient} from '@angular/common/http';
+import {HttpService} from '../http.service';
+
+export class Topic{
+  text: string;
+}
+
+export class User{
+
+       name: string;
+       email: string;
+       phone: string;
+       select:string;
+       text: string;
+}
+
+let MaskedInputComponent;
+
+@Component({
+  selector: 'app-form',
+  templateUrl: './form.component.html',
+  styleUrls: ['./form.component.scss'],
+  encapsulation: ViewEncapsulation.None,
+  providers: [
+
+  ]
+})
+
+
+
+
+export class FormComponent implements  OnInit {
+
+  topics: Topic[]=[];
+
+  constructor(private httpService: HttpService){}
+
+  done: boolean = false;
+
+  outPut() {
+      let a = this.httpService.Gettopics();
+      console.log(a);
+  }
+
+  ngOnInit(){
+
+    let a = this.httpService.outData().subscribe();
+    console.log(a);
+  }
+
+  //Добавление тем
+
+
+  // @ts-ignore
+
+
+
+
+
+
+
+
+
+  compareObjects(o1: any, o2: any): boolean {
+    return o1.id === o2.id && o1.text === o2.text;
+  }
+
+  phoneControl: FormControl;
+
+  PHONE_PATTERN = /\+7\(\d{3}\)\-\d{3}\-\d{4}/;
+
+
+  PHONE_MASK = ['+','7','(', /[1-9]/, /\d/, /\d/, ')', '-', /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/, /\d/];
+
+
+  user: User = new User()
+  users: User[] = [];
+
+
+
+
+  test() {
+    if(this.user.text === '123') {
+      console.log('True');
+    }
+  }
+
+
+
+  addUser(){
+
+    this.users.push(new User());
+
+    console.log(this.user);
+  }
+
+  submit(myForm: NgForm) {
+    console.log(myForm);
+  }
+
+
+}
+
+
+
+
+
+
+
+

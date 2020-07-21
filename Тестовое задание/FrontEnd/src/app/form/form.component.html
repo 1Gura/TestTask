@@ -1,0 +1,145 @@
+<div class="modal-window">
+
+  <form  #myForm = 'ngForm' class="form" id="form" action="?" method="POST">
+    <!--[formControl]="nameControl"-->
+    <span class="ribbon">Напишите нам</span>
+    <table>
+      <tr class="form-group">
+        <td  class="form__left"><label class="label" for="name">Ваше имя:</label></td>
+        <td class="form__right">
+          <img src="../../assets/man.png" class="img" alt="">
+          <div class="block"><div [hidden]="name.valid || name.untouched" class="text-danger">
+            Не указано имя
+          </div></div>
+          <span id='errorContainer'></span>
+          <input required data-parsley-errors-container="#errorContainer" data-parsley-required="true"
+                 value="" type="text"
+            placeholder="Илья" maxlength="30" [(ngModel)]="user.name"  #name='ngModel'
+            name="name" id="name" class="entry icon form-control" type="text" >
+
+        </td>
+      </tr>
+      <tr class="form-group">
+        <td  class="form__left"><label class="label" for="mail">Ваш email:</label></td>
+        <td class="form__right">
+          <img src="../../assets/mail.png" class="img" alt="">
+          <div class="block"><div [hidden]="email.valid || email.untouched" class="text-danger">
+            Некорректный email
+          </div></div>
+
+          <input placeholder="gura.ilya2011@yandex.ru" maxlength="64" [(ngModel)]="user.email" name="email"  #email='ngModel' required email
+                 id="mail" class="entry icon form-control" type="email" >
+        </td>
+      </tr>
+      <tr class="form-group">
+        <td  class="form__left"><label class="label" for="tel">Ваш телефон:</label></td>
+        <td class="form__right">
+          <img src="../../assets/tel.png" class="img" alt="">
+          <div class="block"><div [hidden]="phone.valid || phone.untouched" class="text-danger">
+            Некорректный телефон
+          </div></div>
+
+          <input
+            placeholder="+7 (___) ___-____" [pattern]="PHONE_PATTERN" [textMask]="{mask: PHONE_MASK}"
+            [(ngModel)]="user.phone" #phone='ngModel' id="tel" name="phone"
+            required [value]="123"  class="entry icon form-control" >
+        </td>
+      </tr>
+
+      <tr class="form-group">
+        <td class="form__left"><label id="select-label" for="sel">Тема:</label></td>
+        <td class="form__right">
+          <div class="block">
+            <div [hidden]="select.valid || select.untouched" class="text-danger">
+              Выберите тему!
+            </div>
+          </div>
+
+          <select [(ngModel)]="user.select" #select = 'ngModel' required
+                  class="entry form-control ng-valid" name="select" id="sel">
+            <option *ngFor="let topic of topics" [value]="topic.id">{{topic.textTopic}}</option>
+          </select>
+        </td>
+      </tr>
+      <tr class="form-group">
+        <td class="form__left"><label for="text">Ваше сообщение:</label></td>
+        <td class="form__right">
+          <div class="block"><div [hidden]="textMessage.valid || textMessage.untouched" class="text-danger">
+            Не введено сообщение!
+          </div></div>
+          <textarea maxlength="400" [(ngModel)]="user.textMessage"  #textMessage='ngModel'
+                    required   autocapitalize="on" name="text" id="text" class="entry form-control" type="text" ></textarea>
+        </td>
+      </tr>
+      <tr class="form-group margin">
+        <td class="form__left"><label>Капча:</label></td>
+        <td class="form__right" id="capcha-body">
+          <div #captchaElem  class="g-recaptcha"
+               required = "required"
+               data-sitekey="6Lc-MbMZAAAAAJi6qd9N36Zhy4FHT37h-kmi8fCK"></div>
+
+        </td>
+      </tr>
+      <tr>
+        <td class="form__left"></td>
+        <td class="form__right form-group">
+
+          <button id="btn"
+                  data-callback='onSubmit'
+                  data-action='submit'
+                  type = "submit" [disabled]="myForm.invalid "
+                  class="form__button"  (click)="submit(user)">Отправить письмо!</button>
+
+        </td>
+      </tr>
+
+    </table>
+
+  </form>
+
+
+
+  <div class="result-table hidden">
+    <table *ngIf="done">
+      <tr class="form-group">
+        <td  class="form__left"><p class="p">Ваше имя:</p></td>
+        <td class="form__right">
+          <p>{{temp.name}}</p>
+        </td>
+
+      </tr>
+      <tr class="form-group">
+        <td  class="form__left"><p class="p">Ваш email:</p></td>
+        <td class="form__right">
+          <p>{{temp.email}}</p>
+        </td>
+      </tr>
+      <tr class="form-group">
+        <td  class="form__left"><p class="p">Ваш телефон:</p></td>
+        <td class="form__right">
+          <p>{{temp.phone}}</p>
+        </td>
+      </tr>
+
+      <tr class="form-group">
+        <td class="form__left"><p id="select-p" >Тема:</p></td>
+        <td class="form__right">
+
+          <div *ngFor="let topic of topics">
+            <p *ngIf="topic.id == receivedUser.topicId">{{topic.textTopic}}</p>
+          </div>
+
+        </td>
+      </tr>
+      <tr class="form-group">
+        <td class="form__left"><p >Ваше сообщение:</p></td>
+        <td class="form__right">
+          <p>{{receivedUser.textMessage}}</p>
+        </td>
+      </tr>
+
+    </table>
+  </div>
+
+</div>
+
